@@ -1,0 +1,7 @@
+{
+  "channel": "stable",
+  "version": "6.0.1",
+  "manifestUrl": "",
+  "status": "manifest-not-configured",
+  "message": "Online update checks need a hosted HTTPS update-manifest.json. Configure manifestUrl to enable them."
+}

@@ -1,0 +1,80 @@
+name: Build and publish VPB6 release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: vpb6-release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release-windows-x64:
+    runs-on: windows-latest
+    steps:
+      - name: Check out tagged source
+        uses: actions/checkout@v4
+
+      - name: Install .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Validate release tag and source version
+        shell: pwsh
+        run: |
+          $version = (Get-Content -LiteralPath 'VERSION.txt' -Raw).Trim()
+          $expectedTag = "v$version"
+          if ($env:GITHUB_REF_TYPE -ne 'tag' -or $env:GITHUB_REF_NAME -ne $expectedTag) {
+            throw "Release tag '$env:GITHUB_REF_NAME' does not match VERSION.txt ('$expectedTag')."
+          }
+
+      - name: Build, run regression checks and generate update manifest
+        shell: pwsh
+        env:
+          VPB6_GITHUB_REPOSITORY: ${{ github.repository }}
+          VPB6_UPDATE_MANIFEST_URL: https://github.com/${{ github.repository }}/releases/latest/download/update-manifest.json
+        run: .\scripts\Publish-Release.ps1
+
+      - name: Install Inno Setup 6
+        shell: pwsh
+        run: choco install innosetup --yes --no-progress
+
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $compiler = Join-Path ${env:ProgramFiles(x86)} 'Inno Setup 6\ISCC.exe'
+          if (-not (Test-Path -LiteralPath $compiler -PathType Leaf)) {
+            throw "Inno Setup compiler was not found at '$compiler'."
+          }
+          & $compiler '.\installer\VPB6.iss'
+          if ($LASTEXITCODE -ne 0) { throw 'Inno Setup failed to build the installer.' }
+
+      - name: Publish GitHub Release assets
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $version = (Get-Content -LiteralPath 'VERSION.txt' -Raw).Trim()
+          $tag = $env:GITHUB_REF_NAME
+          $assets = @(
+            "release/VirtualPianoBot-$version-Setup.exe",
+            "release/VirtualPianoBot-$version-win-x64.zip",
+            'release/VirtualPianoBot-Update.zip',
+            'release/update-manifest.json'
+          )
+          foreach ($asset in $assets) {
+            if (-not (Test-Path -LiteralPath $asset -PathType Leaf)) { throw "Release asset missing: $asset" }
+          }
+          $ghArgs = @('release', 'create', $tag) + $assets + @(
+            '--title', "Virtual Piano Bot $version",
+            '--notes-file', 'RELEASE_NOTES.md',
+            '--verify-tag',
+            '--latest'
+          )
+          & gh @ghArgs
+          if ($LASTEXITCODE -ne 0) { throw 'GitHub Release creation failed.' }

@@ -1,0 +1,520 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:analysis="clr-namespace:VirtualPianoBot.Analysis"
+        xmlns:studio="clr-namespace:VirtualPianoBot.Studio"
+        x:Class="VirtualPianoBot.MainWindow"
+        Title="Virtual Piano Bot 6"
+        Width="1480" Height="920" MinWidth="1100" MinHeight="720"
+        Background="{DynamicResource AppBackgroundBrush}">
+  <Grid ColumnDefinitions="250,*">
+    <Border Grid.Column="0" Background="{DynamicResource SidebarBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,1,0">
+      <Grid RowDefinitions="Auto,*,Auto">
+        <StackPanel Margin="20,22,20,16" Spacing="16">
+          <Grid ColumnDefinitions="48,*,Auto" ColumnSpacing="12">
+            <Border Width="48" Height="48" CornerRadius="15" Background="{DynamicResource AccentGradientBrush}">
+              <TextBlock Text="V" FontSize="26" FontWeight="Black" Foreground="#081006" HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="1">
+              <TextBlock Text="VIRTUAL PIANO" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource SecondaryTextBrush}" />
+              <TextBlock Text="BOT 6" FontSize="21" FontWeight="Black" Foreground="{DynamicResource PrimaryTextBrush}" />
+            </StackPanel>
+            <Ellipse Grid.Column="2" Width="8" Height="8" Fill="{DynamicResource AccentBrush}" VerticalAlignment="Top" Margin="0,5,2,0" />
+          </Grid>
+          <Border Height="1" Background="{DynamicResource BorderBrush}" />
+          <Border Background="{DynamicResource AccentDimBrush}" BorderBrush="{DynamicResource AccentSoftBrush}" BorderThickness="1" CornerRadius="11" Padding="11,9">
+            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="9">
+              <Ellipse Width="7" Height="7" Fill="{DynamicResource AccentBrush}" VerticalAlignment="Center" />
+              <StackPanel Grid.Column="1" Spacing="1"><TextBlock Text="SYSTEM ONLINE" FontSize="9" FontWeight="Bold" /><TextBlock Text="Library protected" FontSize="9" Foreground="{DynamicResource MutedBrush}" /></StackPanel>
+              <TextBlock Grid.Column="2" Text="06" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" />
+            </Grid>
+          </Border>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Margin="12,4,12,12" Spacing="7">
+          <TextBlock Text="WORKSPACE" Classes="eyebrow" Margin="8,0,0,6" />
+          <Button Classes="navButton" Command="{Binding NavigateCommand}" CommandParameter="Dashboard"><Grid ColumnDefinitions="30,*,Auto" ColumnSpacing="10"><Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource AccentDimBrush}"><TextBlock Text="◈" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock Grid.Column="1" Text="Dashboard" VerticalAlignment="Center" FontWeight="SemiBold" /><Ellipse Grid.Column="2" Width="5" Height="5" Fill="{DynamicResource AccentBrush}" IsVisible="{Binding IsDashboardSelected}" /></Grid></Button>
+          <Button Classes="navButton" Command="{Binding NavigateCommand}" CommandParameter="Library"><Grid ColumnDefinitions="30,*,Auto" ColumnSpacing="10"><Border Width="28" Height="28" CornerRadius="8" Background="#10242B"><TextBlock Text="♫" Foreground="{DynamicResource CyanBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock Grid.Column="1" Text="MIDI Library" VerticalAlignment="Center" FontWeight="SemiBold" /><Ellipse Grid.Column="2" Width="5" Height="5" Fill="{DynamicResource AccentBrush}" IsVisible="{Binding IsLibrarySelected}" /></Grid></Button>
+          <Button Classes="navButton" Command="{Binding NavigateCommand}" CommandParameter="Analysis"><Grid ColumnDefinitions="30,*,Auto" ColumnSpacing="10"><Border Width="28" Height="28" CornerRadius="8" Background="#211A35"><TextBlock Text="⌁" FontSize="19" Foreground="{DynamicResource PurpleBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock Grid.Column="1" Text="Analysis Studio" VerticalAlignment="Center" FontWeight="SemiBold" /><Ellipse Grid.Column="2" Width="5" Height="5" Fill="{DynamicResource AccentBrush}" IsVisible="{Binding IsAnalysisSelected}" /></Grid></Button>
+          <Border Height="1" Background="{DynamicResource BorderBrush}" Margin="8,14,8,9" />
+          <TextBlock Text="SYSTEM" Classes="eyebrow" Margin="8,0,0,4" />
+          <Button Classes="navButton" Command="{Binding NavigateCommand}" CommandParameter="Studio"><Grid ColumnDefinitions="30,*,Auto" ColumnSpacing="10"><Border Width="28" Height="28" CornerRadius="8" Background="#10242B"><TextBlock Text="▶" Foreground="{DynamicResource CyanBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock Grid.Column="1" Text="Performance Studio" VerticalAlignment="Center" FontWeight="SemiBold" /><Ellipse Grid.Column="2" Width="5" Height="5" Fill="{DynamicResource AccentBrush}" IsVisible="{Binding IsStudioSelected}" /></Grid></Button>
+          <Button Classes="navButton" Command="{Binding NavigateCommand}" CommandParameter="Settings"><Grid ColumnDefinitions="30,*,Auto" ColumnSpacing="10"><Border Width="28" Height="28" CornerRadius="8" Background="{DynamicResource CardBrush}"><TextBlock Text="⚙" Foreground="{DynamicResource SecondaryTextBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><TextBlock Grid.Column="1" Text="Settings" VerticalAlignment="Center" FontWeight="SemiBold" /><Ellipse Grid.Column="2" Width="5" Height="5" Fill="{DynamicResource AccentBrush}" IsVisible="{Binding IsSettingsSelected}" /></Grid></Button>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Margin="17,10,17,19" Spacing="10">
+          <Border Background="{DynamicResource SurfaceBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="14" Padding="13"><StackPanel Spacing="8"><TextBlock Text="LIBRARY CORE" Classes="eyebrow" /><TextBlock Text="{Binding LibraryFileCountLabel}" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource PrimaryTextBrush}" /><TextBlock Text="{Binding LibraryFolder}" FontSize="9" Foreground="{DynamicResource MutedBrush}" TextWrapping="Wrap" /></StackPanel></Border>
+          <TextBlock Text="VPB 6  /  PHASE 5" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource MutedBrush}" HorizontalAlignment="Center" />
+        </StackPanel>
+      </Grid>
+    </Border>
+
+    <Grid Grid.Column="1" RowDefinitions="Auto,*,Auto">
+      <Canvas Grid.RowSpan="3" IsHitTestVisible="False" ClipToBounds="True">
+        <Ellipse x:Name="AmbientOrb1" Width="520" Height="520" Fill="{DynamicResource AccentBrush}" Opacity="0.025" Canvas.Left="620" Canvas.Top="-230" />
+        <Ellipse x:Name="AmbientOrb2" Width="420" Height="420" Fill="#5DE4FF" Opacity="0.022" Canvas.Left="-120" Canvas.Top="420" />
+        <Ellipse x:Name="AmbientOrb3" Width="300" Height="300" Fill="#A989FF" Opacity="0.018" Canvas.Left="820" Canvas.Top="620" />
+        <Ellipse x:Name="Particle1" Width="4" Height="4" Fill="{DynamicResource AccentBrush}" Opacity="0.55" Canvas.Left="140" Canvas.Top="130" />
+        <Ellipse x:Name="Particle2" Width="3" Height="3" Fill="#5DE4FF" Opacity="0.45" Canvas.Left="360" Canvas.Top="310" />
+        <Ellipse x:Name="Particle3" Width="5" Height="5" Fill="#A989FF" Opacity="0.35" Canvas.Left="610" Canvas.Top="190" />
+        <Ellipse x:Name="Particle4" Width="3" Height="3" Fill="{DynamicResource AccentBrush}" Opacity="0.42" Canvas.Left="820" Canvas.Top="390" />
+        <Ellipse x:Name="Particle5" Width="4" Height="4" Fill="#5DE4FF" Opacity="0.4" Canvas.Left="1030" Canvas.Top="160" />
+        <Ellipse x:Name="Particle6" Width="3" Height="3" Fill="#A989FF" Opacity="0.5" Canvas.Left="1160" Canvas.Top="500" />
+        <Ellipse x:Name="Particle7" Width="4" Height="4" Fill="{DynamicResource AccentBrush}" Opacity="0.35" Canvas.Left="260" Canvas.Top="650" />
+        <Ellipse x:Name="Particle8" Width="3" Height="3" Fill="#5DE4FF" Opacity="0.45" Canvas.Left="720" Canvas.Top="710" />
+        <Border x:Name="PageTransitionSweep" Width="3" Height="520" Background="{DynamicResource AccentBrush}" Opacity="0" Canvas.Left="0" Canvas.Top="70" />
+        <Border x:Name="PageTransitionGlow" Width="120" Height="520" Background="{DynamicResource AccentBrush}" Opacity="0" Canvas.Left="-120" Canvas.Top="70" />
+      </Canvas>
+      <Border Grid.Row="0" Background="{DynamicResource SidebarBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,0,0,1" Padding="30,18">
+        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="22">
+          <StackPanel Spacing="3"><StackPanel Orientation="Horizontal" Spacing="9"><TextBlock Text="{Binding CurrentPageTitle}" Classes="pageTitle" /><Border Background="{DynamicResource AccentDimBrush}" BorderBrush="{DynamicResource AccentSoftBrush}" BorderThickness="1" CornerRadius="7" Padding="7,4"><TextBlock Text="ALPHA" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" /></Border></StackPanel><TextBlock Text="{Binding CurrentPageSubtitle}" FontSize="11" Classes="muted" /></StackPanel>
+          <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="9" VerticalAlignment="Center"><Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="11,8"><StackPanel Orientation="Horizontal" Spacing="8"><Ellipse Width="7" Height="7" Fill="{DynamicResource AccentBrush}" /><TextBlock Text="CORE READY" FontSize="9" FontWeight="Bold" /></StackPanel></Border><Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="10" Padding="11,8"><TextBlock Text=".NET 10" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource CyanBrush}" /></Border></StackPanel>
+        </Grid>
+      </Border>
+
+      <ScrollViewer Grid.Row="1" x:Name="PageScroll" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+        <Grid x:Name="WorkspaceSurface" Margin="30,26,30,30" Opacity="1">
+          <Grid.RenderTransform>
+            <TranslateTransform X="0" Y="0" />
+          </Grid.RenderTransform>
+          <StackPanel IsVisible="{Binding IsDashboard}" Spacing="18">
+            <Grid ColumnDefinitions="2*,1*" ColumnSpacing="14">
+              <Border Classes="surfaceCard" Padding="26" Background="{DynamicResource HeroBrush}">
+                <Grid ColumnDefinitions="*,260" ColumnSpacing="22">
+                  <StackPanel Spacing="12" VerticalAlignment="Center"><TextBlock Text="YOUR WORKSPACE" Classes="eyebrow" Foreground="{DynamicResource AccentBrush}" /><StackPanel Spacing="0">
+                    <TextBlock Text="Make music." FontSize="38" FontWeight="SemiBold" LineHeight="42" />
+                    <TextBlock Text="See everything." FontSize="38" FontWeight="SemiBold" LineHeight="42" />
+                  </StackPanel><TextBlock Text="A focused control room for your MIDI collection. Browse, inspect and prepare tracks from one place." FontSize="12" LineHeight="20" Classes="muted" TextWrapping="Wrap" MaxWidth="620" /><StackPanel Orientation="Horizontal" Spacing="9"><Button Classes="primaryButton" Command="{Binding NavigateCommand}" CommandParameter="Library">BROWSE LIBRARY</Button><Button Classes="secondaryButton" Command="{Binding OpenMidiFolderCommand}">OPEN FOLDER</Button></StackPanel></StackPanel>
+                  <Border Grid.Column="1" Height="190" Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="18" ClipToBounds="True"><Grid><Ellipse x:Name="HeroGlow" Width="180" Height="180" Fill="{DynamicResource AccentBrush}" Opacity="0.035" HorizontalAlignment="Center" VerticalAlignment="Center" /><Ellipse x:Name="HeroGlow2" Width="120" Height="120" Fill="#5DE4FF" Opacity="0.045" HorizontalAlignment="Center" VerticalAlignment="Center" /><Ellipse x:Name="PulseRing1" Width="105" Height="105" Stroke="{DynamicResource AccentBrush}" StrokeThickness="1" Opacity="0.5" HorizontalAlignment="Center" VerticalAlignment="Center" /><Ellipse x:Name="PulseRing2" Width="135" Height="135" Stroke="#5DE4FF" StrokeThickness="1" Opacity="0.35" HorizontalAlignment="Center" VerticalAlignment="Center" /><TextBlock Text="♫" FontSize="54" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" /></Grid></Border>
+                </Grid>
+              </Border>
+              <Border Grid.Column="1" Classes="surfaceCard"><StackPanel Spacing="12"><TextBlock Text="NOW PLAYING" Classes="eyebrow" Foreground="{DynamicResource CyanBrush}" /><Border Background="{DynamicResource CardBrush}" CornerRadius="13" Padding="16"><StackPanel Spacing="8"><TextBlock Text="{Binding SelectedMidiTitle}" FontSize="19" FontWeight="SemiBold" TextWrapping="Wrap" /><TextBlock Text="{Binding SelectedMidiPath}" FontSize="10" Classes="muted" TextWrapping="Wrap" /><Grid ColumnDefinitions="*,Auto" Margin="0,7,0,0"><TextBlock Text="{Binding SelectedMidiSize}" FontSize="10" Classes="muted" /><TextBlock Grid.Column="1" Text="{Binding SelectedMidiModified}" FontSize="10" Classes="muted" /></Grid></StackPanel></Border><StackPanel Orientation="Horizontal" Spacing="7"><Button Classes="primaryButton" Command="{Binding NavigateCommand}" CommandParameter="Library">CHOOSE MIDI</Button><Button Classes="secondaryButton" Command="{Binding OpenSelectedMidiFolderCommand}">SHOW FOLDER</Button></StackPanel></StackPanel></Border>
+            </Grid>
+            <Grid ColumnDefinitions="*,*,*" ColumnSpacing="12">
+              <Border Classes="surfaceCard"><StackPanel Spacing="6"><TextBlock Text="COLLECTION" Classes="eyebrow" /><TextBlock Text="{Binding LibraryFileCountLabel}" FontSize="25" FontWeight="SemiBold" /><TextBlock Text="Permanent library" FontSize="10" Classes="muted" /></StackPanel></Border>
+              <Border Grid.Column="1" Classes="surfaceCard"><StackPanel Spacing="6"><TextBlock Text="STORAGE" Classes="eyebrow" /><TextBlock Text="{Binding TotalLibrarySizeLabel}" FontSize="25" FontWeight="SemiBold" /><TextBlock Text="Across MIDI files" FontSize="10" Classes="muted" /></StackPanel></Border>
+              <Border Grid.Column="2" Classes="surfaceCard"><StackPanel Spacing="6"><TextBlock Text="ENGINE" Classes="eyebrow" /><TextBlock Text="READY" FontSize="25" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" /><TextBlock Text="VPB 6 foundation online" FontSize="10" Classes="muted" /></StackPanel></Border>
+            </Grid>
+            <Grid ColumnDefinitions="2*,1*" ColumnSpacing="14">
+              <Border Classes="surfaceCard"><StackPanel Spacing="10"><Grid ColumnDefinitions="*,Auto"><StackPanel><TextBlock Text="RECENTLY TOUCHED" Classes="eyebrow" /><TextBlock Text="Your latest MIDI files" FontSize="20" FontWeight="SemiBold" /></StackPanel><Button Grid.Column="1" Classes="secondaryButton" Command="{Binding NavigateCommand}" CommandParameter="Library">VIEW ALL</Button></Grid><ItemsControl ItemsSource="{Binding RecentLibraryItems}"><ItemsControl.ItemTemplate><DataTemplate><Button Classes="navButton" Command="{Binding $parent[ItemsControl].DataContext.SelectMidiCommand}" CommandParameter="{Binding}" HorizontalContentAlignment="Stretch"><Grid ColumnDefinitions="36,*,Auto" ColumnSpacing="10"><Border Width="34" Height="34" CornerRadius="10" Background="{DynamicResource AccentDimBrush}"><TextBlock Text="♫" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" /></Border><StackPanel Grid.Column="1" VerticalAlignment="Center"><TextBlock Text="{Binding Title}" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" /><TextBlock Text="{Binding RelativePath}" FontSize="9" Classes="muted" TextTrimming="CharacterEllipsis" /></StackPanel><TextBlock Grid.Column="2" Text="{Binding FileSizeLabel}" FontSize="9" Classes="muted" VerticalAlignment="Center" /></Grid></Button></DataTemplate></ItemsControl.ItemTemplate></ItemsControl></StackPanel></Border>
+              <Border Grid.Column="1" Classes="surfaceCard"><StackPanel Spacing="10"><TextBlock Text="LIVE SIGNAL" Classes="eyebrow" Foreground="{DynamicResource PurpleBrush}" /><TextBlock Text="Motion layer active" FontSize="20" FontWeight="SemiBold" /><Border Height="100" Background="#090E14" CornerRadius="12" ClipToBounds="True"><Grid VerticalAlignment="Bottom" HorizontalAlignment="Center"><StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Bottom" Height="74"><Border x:Name="SpectrumBar1" Width="9" Height="20" Background="{DynamicResource AccentBrush}" CornerRadius="4" /><Border x:Name="SpectrumBar2" Width="9" Height="30" Background="{DynamicResource CyanBrush}" CornerRadius="4" /><Border x:Name="SpectrumBar3" Width="9" Height="18" Background="{DynamicResource PurpleBrush}" CornerRadius="4" /><Border x:Name="SpectrumBar4" Width="9" Height="25" Background="{DynamicResource AccentBrush}" CornerRadius="4" /></StackPanel><Border x:Name="ScanLine" Height="1" Background="{DynamicResource CyanBrush}" Opacity="0.2" HorizontalAlignment="Stretch" /></Grid></Border><TextBlock Text="Animated visuals are ready for the playback layer in a later phase." FontSize="10" Classes="muted" TextWrapping="Wrap" /></StackPanel></Border>
+            </Grid>
+          </StackPanel>
+
+          <StackPanel IsVisible="{Binding IsLibrary}" Spacing="16">
+            <Border Classes="surfaceCard" Padding="20">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18">
+                <StackPanel Spacing="7">
+                  <TextBlock Text="MIDI LIBRARY 2.0" Classes="eyebrow" Foreground="{DynamicResource AccentBrush}" />
+                  <TextBlock Text="Your collection. Your rules." FontSize="23" FontWeight="SemiBold" />
+                  <TextBlock Text="{Binding LibraryFolder}" FontSize="11" Classes="muted" TextWrapping="Wrap" />
+                  <Grid ColumnDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="18" Margin="0,4,0,0">
+                    <TextBlock Text="{Binding LibraryFileCountLabel}" FontSize="10" Foreground="{DynamicResource CyanBrush}" />
+                    <TextBlock Grid.Column="1" Text="{Binding FavoriteMidiCountLabel}" FontSize="10" Foreground="{DynamicResource PurpleBrush}" />
+                    <TextBlock Grid.Column="2" Text="{Binding RecentMidiCountLabel}" FontSize="10" Foreground="{DynamicResource CyanBrush}" />
+                    <TextBlock Grid.Column="3" Text="{Binding TotalLibrarySizeLabel}" FontSize="10" Classes="muted" />
+                  </Grid>
+                </StackPanel>
+                <StackPanel Grid.Column="1" Spacing="8" VerticalAlignment="Center">
+                  <Button Classes="primaryButton" Command="{Binding ImportMidiFolderCommand}">＋ IMPORT FOLDER</Button>
+                  <Button Classes="secondaryButton" Command="{Binding OpenMidiFolderCommand}">OPEN LIBRARY FOLDER</Button>
+                </StackPanel>
+              </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="10">
+              <TextBox PlaceholderText="Search titles, filenames or folders…" Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinHeight="46" VerticalContentAlignment="Center" />
+              <Button Grid.Column="1" Classes="secondaryButton" Command="{Binding RefreshLibraryCommand}" Content="{Binding RefreshButtonLabel}" />
+            </Grid>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+              <Border Classes="surfaceCard" Padding="12">
+                <StackPanel Spacing="5">
+                  <TextBlock Text="SHOW" Classes="eyebrow" />
+                  <ComboBox ItemsSource="{Binding LibraryFilterModes}" SelectedItem="{Binding LibraryFilterMode, Mode=TwoWay}" MinHeight="40" />
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="1" Classes="surfaceCard" Padding="12">
+                <StackPanel Spacing="5">
+                  <TextBlock Text="SORT BY" Classes="eyebrow" />
+                  <ComboBox ItemsSource="{Binding LibrarySortModes}" SelectedItem="{Binding LibrarySortMode, Mode=TwoWay}" MinHeight="40" />
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12">
+              <StackPanel Spacing="3">
+                <TextBlock Text="YOUR MIDI FILES" Classes="eyebrow" VerticalAlignment="Center" />
+                <TextBlock Text="Favorites and sorting are saved between launches." FontSize="10" Classes="muted" />
+              </StackPanel>
+              <TextBlock Grid.Column="1" Text="{Binding FilteredLibraryCountLabel}" Classes="muted" VerticalAlignment="Center" />
+            </Grid>
+
+            <Border Classes="surfaceCard" Padding="9">
+              <ListBox ItemsSource="{Binding FilteredLibraryItems}" SelectedItem="{Binding SelectedLibraryItem, Mode=TwoWay}" Background="Transparent" BorderThickness="0" MinHeight="300">
+                <ListBox.ItemTemplate>
+                  <DataTemplate>
+                    <Button Classes="navButton" Command="{Binding $parent[ItemsControl].DataContext.SelectMidiCommand}" CommandParameter="{Binding}" HorizontalContentAlignment="Stretch">
+                      <Grid ColumnDefinitions="44,*,Auto" ColumnSpacing="12">
+                        <Border Width="38" Height="38" CornerRadius="11" Background="{DynamicResource AccentDimBrush}">
+                          <TextBlock Text="♫" FontSize="18" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                        </Border>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center" Spacing="3">
+                          <TextBlock Text="{Binding Title}" FontSize="13" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                          <TextBlock Text="{Binding RelativePath}" FontSize="10" Classes="muted" TextTrimming="CharacterEllipsis" />
+                        </StackPanel>
+                        <StackPanel Grid.Column="2" VerticalAlignment="Center" Spacing="3" MinWidth="72">
+                          <TextBlock Text="{Binding FavoriteLabel}" FontSize="15" HorizontalAlignment="Right" Foreground="{DynamicResource AccentBrush}" />
+                          <TextBlock Text="{Binding FileSizeLabel}" FontSize="10" HorizontalAlignment="Right" />
+                          <TextBlock Text="{Binding ModifiedLabel}" FontSize="9" Classes="muted" HorizontalAlignment="Right" />
+                        </StackPanel>
+                      </Grid>
+                    </Button>
+                  </DataTemplate>
+                </ListBox.ItemTemplate>
+              </ListBox>
+            </Border>
+
+            <Border Classes="surfaceCard" Padding="18">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18">
+                <StackPanel Spacing="5">
+                  <TextBlock Text="SELECTED MIDI" Classes="eyebrow" Foreground="{DynamicResource CyanBrush}" />
+                  <TextBlock Text="{Binding SelectedMidiTitle}" FontSize="20" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                  <TextBlock Text="{Binding SelectedMidiPath}" FontSize="10" Classes="muted" TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding SelectedMidiDetailsLabel}" FontSize="10" Classes="muted" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Spacing="8" VerticalAlignment="Center">
+                  <Button Classes="secondaryButton" Command="{Binding ToggleFavoriteMidiCommand}" CommandParameter="{Binding SelectedLibraryItem}" Content="{Binding SelectedFavoriteButtonLabel}" />
+                  <Button Classes="secondaryButton" Command="{Binding OpenSelectedMidiFolderCommand}">OPEN FILE LOCATION</Button>
+                  <Button Classes="primaryButton" Command="{Binding NavigateCommand}" CommandParameter="Studio">OPEN IN STUDIO</Button>
+                </StackPanel>
+              </Grid>
+            </Border>
+          </StackPanel>
+
+          <StackPanel IsVisible="{Binding IsAnalysis}" Spacing="16">
+            <Border Classes="surfaceCard" Padding="18" Background="#0C131B">
+              <Grid RowDefinitions="Auto,Auto" RowSpacing="12">
+                <Grid ColumnDefinitions="*,Auto">
+                  <StackPanel Spacing="3"><TextBlock Text="ANALYSIS VISUALISER" Classes="eyebrow" Foreground="{DynamicResource CyanBrush}"/><TextBlock Text="See where the MIDI gets dense, wide and difficult" FontSize="19" FontWeight="SemiBold"/></StackPanel>
+                  <Border Grid.Column="1" Background="{DynamicResource AccentDimBrush}" BorderBrush="{DynamicResource AccentSoftBrush}" BorderThickness="1" CornerRadius="9" Padding="9,6"><TextBlock Text="LIVE MODEL" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}"/></Border>
+                </Grid>
+                <analysis:AnalysisVisualizer Grid.Row="1" Height="230" Result="{Binding AnalysisResult}"/>
+              </Grid>
+            </Border>
+            <Border Classes="surfaceCard" Padding="26" Background="{DynamicResource HeroBrush}">
+              <Grid ColumnDefinitions="*,Auto" ColumnSpacing="20">
+                <StackPanel Spacing="8">
+                  <TextBlock Text="ANALYSIS STUDIO / PHASE 4" Classes="eyebrow" Foreground="{DynamicResource PurpleBrush}" />
+                  <TextBlock Text="Turn a MIDI into measurable intelligence." FontSize="30" FontWeight="SemiBold" />
+                  <TextBlock Text="Real note data, density, range, chord pressure and playback recommendations. No placeholder numbers." FontSize="12" LineHeight="20" Classes="muted" TextWrapping="Wrap" MaxWidth="760" />
+                  <TextBlock Text="{Binding SelectedMidiTitle}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+                <StackPanel Grid.Column="1" Spacing="8" VerticalAlignment="Center">
+                  <Button Classes="primaryButton" Command="{Binding AnalyzeSelectedCommand}" Content="{Binding AnalyzeButtonLabel}" />
+                  <Button Classes="secondaryButton" Command="{Binding ApplyRecommendationCommand}" Content="APPLY RECOMMENDATION" />
+                </StackPanel>
+              </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="1.2*,*,*,*" ColumnSpacing="12">
+              <Border Classes="surfaceCard" Padding="18">
+                <StackPanel Spacing="4"><TextBlock Text="DIFFICULTY" Classes="eyebrow" Foreground="{DynamicResource PurpleBrush}" /><TextBlock Text="{Binding AnalysisDifficulty}" FontSize="26" FontWeight="SemiBold" /><TextBlock Text="{Binding AnalysisDifficultyDetail}" FontSize="9" Classes="muted" TextWrapping="Wrap" /></StackPanel>
+              </Border>
+              <Border Grid.Column="1" Classes="surfaceCard" Padding="18">
+                <StackPanel Spacing="4"><TextBlock Text="MELODY CANDIDATE" Classes="eyebrow" /><TextBlock Text="{Binding AnalysisScore}" FontSize="26" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" /><TextBlock Text="0–100 heuristic score" FontSize="9" Classes="muted" /></StackPanel>
+              </Border>
+              <Border Grid.Column="2" Classes="surfaceCard" Padding="18">
+                <StackPanel Spacing="4"><TextBlock Text="CONFIDENCE" Classes="eyebrow" /><TextBlock Text="{Binding AnalysisConfidence}" FontSize="26" FontWeight="SemiBold" /><TextBlock Text="analysis confidence" FontSize="9" Classes="muted" /></StackPanel>
+              </Border>
+              <Border Grid.Column="3" Classes="surfaceCard" Padding="18">
+                <StackPanel Spacing="4"><TextBlock Text="NOTES" Classes="eyebrow" /><TextBlock Text="{Binding AnalysisNotes}" FontSize="26" FontWeight="SemiBold" /><TextBlock Text="parsed note events" FontSize="9" Classes="muted" /></StackPanel>
+              </Border>
+            </Grid>
+
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+              <Border Classes="surfaceCard" Padding="20">
+                <StackPanel Spacing="12">
+                  <Grid ColumnDefinitions="*,Auto"><StackPanel><TextBlock Text="CORE METRICS" Classes="eyebrow" Foreground="{DynamicResource CyanBrush}" /><TextBlock Text="What the MIDI is actually doing" FontSize="19" FontWeight="SemiBold" /></StackPanel><TextBlock Grid.Column="1" Text="{Binding AnalysisDuration}" FontSize="11" Classes="muted" VerticalAlignment="Bottom" /></Grid>
+                  <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="12" ColumnSpacing="20">
+                    <StackPanel><TextBlock Text="PITCH RANGE" Classes="eyebrow"/><TextBlock Text="{Binding AnalysisRange}" FontSize="16" FontWeight="SemiBold"/></StackPanel>
+                    <StackPanel Grid.Column="1"><TextBlock Text="SOURCE → TARGET BPM" Classes="eyebrow"/><TextBlock Text="{Binding AnalysisBpm}" FontSize="16" FontWeight="SemiBold"/></StackPanel>
+                    <StackPanel Grid.Row="1"><TextBlock Text="NOTE DENSITY" Classes="eyebrow"/><TextBlock Text="{Binding AnalysisDensity}" FontSize="16" FontWeight="SemiBold"/></StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="1"><TextBlock Text="PEAK DENSITY" Classes="eyebrow"/><TextBlock Text="{Binding AnalysisPeakDensity}" FontSize="16" FontWeight="SemiBold"/></StackPanel>
+                    <StackPanel Grid.Row="2"><TextBlock Text="CHORD DENSITY" Classes="eyebrow"/><TextBlock Text="{Binding AnalysisChords}" FontSize="16" FontWeight="SemiBold"/></StackPanel>
+                    <StackPanel Grid.Row="2" Grid.Column="1"><TextBlock Text="MAX OVERLAP" Classes="eyebrow"/><TextBlock Text="{Binding AnalysisOverlap}" FontSize="16" FontWeight="SemiBold"/></StackPanel>
+                    <StackPanel Grid.Row="3"><TextBlock Text="PLAYABLE COVERAGE" Classes="eyebrow"/><TextBlock Text="{Binding AnalysisCoverage}" FontSize="16" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/></StackPanel>
+                    <StackPanel Grid.Row="3" Grid.Column="1"><TextBlock Text="RANGE MODE" Classes="eyebrow"/><TextBlock Text="{Binding AnalysisRangeMode}" FontSize="16" FontWeight="SemiBold"/></StackPanel>
+                  </Grid>
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="1" Classes="surfaceCard" Padding="20">
+                <StackPanel Spacing="12">
+                  <TextBlock Text="RECOMMENDATION" Classes="eyebrow" Foreground="{DynamicResource AccentBrush}" /><TextBlock Text="A safer starting point" FontSize="19" FontWeight="SemiBold" />
+                  <Border Background="{DynamicResource AccentDimBrush}" BorderBrush="{DynamicResource AccentSoftBrush}" BorderThickness="1" CornerRadius="12" Padding="15"><StackPanel Spacing="6"><TextBlock Text="SPEED / TEMPO" Classes="eyebrow"/><TextBlock Text="{Binding AnalysisBpm}" FontSize="20" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/><TextBlock Text="{Binding AnalysisTranspose}" FontSize="11" Classes="muted" /></StackPanel></Border>
+                  <TextBlock Text="{Binding AnalysisDifficultSections}" FontSize="10" Classes="muted" TextWrapping="Wrap" />
+                  <TextBlock Text="{Binding AnalysisWarnings}" FontSize="10" Classes="muted" TextWrapping="Wrap" />
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <Border Classes="surfaceCard" Padding="20">
+              <StackPanel Spacing="8">
+                <Grid ColumnDefinitions="*,Auto"><StackPanel><TextBlock Text="ANALYSIS SIGNAL" Classes="eyebrow" Foreground="{DynamicResource PurpleBrush}"/><TextBlock Text="Density pressure across the piece" FontSize="19" FontWeight="SemiBold"/></StackPanel><TextBlock Text="{Binding AnalysisPeakDensity}" FontSize="11" Classes="muted" VerticalAlignment="Bottom"/></Grid>
+                <Border Height="78" Background="#090E14" CornerRadius="12" ClipToBounds="True"><Grid VerticalAlignment="Bottom"><StackPanel Orientation="Horizontal" Spacing="7" Height="58" HorizontalAlignment="Stretch" VerticalAlignment="Bottom"><Border Width="10" Height="22" Background="{DynamicResource AccentBrush}" CornerRadius="5"/><Border Width="10" Height="42" Background="{DynamicResource CyanBrush}" CornerRadius="5"/><Border Width="10" Height="30" Background="{DynamicResource PurpleBrush}" CornerRadius="5"/><Border Width="10" Height="50" Background="{DynamicResource AccentBrush}" CornerRadius="5"/><Border Width="10" Height="34" Background="{DynamicResource CyanBrush}" CornerRadius="5"/><Border Width="10" Height="45" Background="{DynamicResource PurpleBrush}" CornerRadius="5"/><Border Width="10" Height="26" Background="{DynamicResource AccentBrush}" CornerRadius="5"/><Border Width="10" Height="52" Background="{DynamicResource CyanBrush}" CornerRadius="5"/><Border Width="10" Height="36" Background="{DynamicResource PurpleBrush}" CornerRadius="5"/></StackPanel></Grid></Border>
+                <TextBlock Text="The visual signal will become data-driven in Phase 4.5. The metrics above already come from the selected MIDI file." FontSize="10" Classes="muted" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+
+          <StackPanel IsVisible="{Binding IsStudio}" Spacing="14">
+            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="14">
+              <Border Classes="surfaceCard" Padding="22" Background="{DynamicResource HeroBrush}">
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="18">
+                  <StackPanel Spacing="6">
+                    <StackPanel Orientation="Horizontal" Spacing="9">
+                      <TextBlock Text="PERFORMANCE STUDIO / PHASE 2" Classes="eyebrow" Foreground="{DynamicResource CyanBrush}" />
+                      <Border Background="{DynamicResource AccentDimBrush}" BorderBrush="{DynamicResource AccentSoftBrush}" BorderThickness="1" CornerRadius="6" Padding="6,3"><TextBlock Text="LIVE" FontSize="8" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}" /></Border>
+                    </StackPanel>
+                    <TextBlock Text="The control room for your MIDI." FontSize="30" FontWeight="SemiBold" />
+                    <TextBlock Text="Live tempo, note flow, active voices and keyboard state while the music plays." FontSize="12" LineHeight="20" Classes="muted" TextWrapping="Wrap" MaxWidth="760" />
+                    <TextBlock Text="{Binding StudioTrackLabel}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" TextTrimming="CharacterEllipsis" />
+                  </StackPanel>
+                  <Border Grid.Column="1" Background="#0A1118" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="16" Padding="18" MinWidth="190">
+                    <StackPanel Spacing="5">
+                      <TextBlock Text="TRANSPORT" Classes="eyebrow" Foreground="{DynamicResource AccentBrush}" />
+                      <TextBlock Text="{Binding StudioStatusLabel}" FontSize="11" FontWeight="Bold" TextWrapping="Wrap" />
+                      <Grid ColumnDefinitions="*,Auto" Margin="0,7,0,0"><TextBlock Text="{Binding StudioElapsedLabel}" FontSize="18" FontWeight="SemiBold"/><TextBlock Grid.Column="1" Text="{Binding StudioRemainingLabel}" FontSize="11" Classes="muted" VerticalAlignment="Bottom"/></Grid>
+                    </StackPanel>
+                  </Border>
+                </Grid>
+              </Border>
+              <Border Grid.Column="1" Classes="surfaceCard" Padding="16" Width="205">
+                <StackPanel Spacing="8">
+                  <TextBlock Text="PERFORMANCE" Classes="eyebrow" Foreground="{DynamicResource PurpleBrush}" />
+                  <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" RowSpacing="9" ColumnSpacing="12">
+                    <StackPanel><TextBlock Text="PLAYABLE" Classes="eyebrow"/><TextBlock Text="{Binding StudioPlayableNotesLabel}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/></StackPanel>
+                    <StackPanel Grid.Column="1"><TextBlock Text="SKIPPED" Classes="eyebrow"/><TextBlock Text="{Binding StudioSkippedNotesLabel}" FontSize="13" FontWeight="SemiBold"/></StackPanel>
+                    <StackPanel Grid.Row="1"><TextBlock Text="KEYS" Classes="eyebrow"/><TextBlock Text="{Binding StudioMappedKeysLabel}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource CyanBrush}"/></StackPanel>
+                    <StackPanel Grid.Row="1" Grid.Column="1"><TextBlock Text="CONFLICTS" Classes="eyebrow"/><TextBlock Text="{Binding StudioConflictLabel}" FontSize="13" FontWeight="SemiBold"/></StackPanel>
+                  </Grid>
+                </StackPanel>
+              </Border>
+            </Grid>
+
+            <Border Classes="surfaceCard" Padding="12">
+              <Grid RowDefinitions="Auto,420,Auto,76" RowSpacing="10">
+                <Grid Grid.Row="0" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12" RowSpacing="7" Margin="2,0,2,2">
+                  <StackPanel Spacing="2" VerticalAlignment="Center">
+                    <TextBlock Text="VISUALISER ENGINE" Classes="eyebrow" Foreground="{DynamicResource AccentBrush}" />
+                    <TextBlock Text="Adaptive falling-note rendering" FontSize="10" Classes="muted" />
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <StackPanel Spacing="2"><TextBlock Text="FALL WINDOW" Classes="eyebrow"/><ComboBox Width="94" MinHeight="32" ItemsSource="{Binding StudioVisualizerLookAheadOptions}" SelectedItem="{Binding StudioVisualizerLookAheadOption, Mode=TwoWay}" /></StackPanel>
+                    <StackPanel Spacing="2"><TextBlock Text="COLOUR BY" Classes="eyebrow"/><ComboBox Width="94" MinHeight="32" ItemsSource="{Binding StudioVisualizerColorModes}" SelectedItem="{Binding StudioVisualizerColorMode, Mode=TwoWay}" /></StackPanel>
+                    <StackPanel Spacing="2"><TextBlock Text="RENDER DETAIL" Classes="eyebrow"/><ComboBox Width="100" MinHeight="32" ItemsSource="{Binding StudioVisualizerDetailModes}" SelectedItem="{Binding StudioVisualizerDetailMode, Mode=TwoWay}" /></StackPanel>
+                  </StackPanel>
+                  <StackPanel Grid.Column="2" Orientation="Horizontal" Spacing="7" VerticalAlignment="Center">
+                    <ToggleSwitch Content="BEAT GRID" IsChecked="{Binding StudioVisualizerShowBeatGrid}" VerticalAlignment="Center" />
+                    <ToggleSwitch Content="NOTE NAMES" IsChecked="{Binding StudioVisualizerShowNoteLabels}" VerticalAlignment="Center" />
+                  </StackPanel>
+                </Grid>
+                <Border Grid.Row="1" Background="#05080C" CornerRadius="12" ClipToBounds="True" BorderBrush="#1D2A38" BorderThickness="1">
+                  <Grid>
+                    <studio:PianoRollVisualizer Result="{Binding StudioResult}" PositionMs="{Binding StudioPositionMs, Mode=TwoWay}" SelectedTrackIndices="{Binding StudioVisibleTrackIndices}" FilterTracksEnabled="{Binding StudioVisualizerFilterTracksEnabled}" LookAheadSeconds="{Binding StudioVisualizerLookAheadSeconds}" ColorMode="{Binding StudioVisualizerColorMode}" DetailMode="{Binding StudioVisualizerDetailMode}" ShowBeatGrid="{Binding StudioVisualizerShowBeatGrid}" ShowNoteLabels="{Binding StudioVisualizerShowNoteLabels}" TransposeSemitones="{Binding StudioTranspose}" AccentColor="{Binding AccentColorHex}" ThemeMode="{Binding ThemeOption}" />
+                    <studio:StudioEffectsOverlay Result="{Binding StudioResult}" PositionMs="{Binding StudioPositionMs}" IsPlaying="{Binding IsStudioPlaying}" />
+                    <Border IsVisible="{Binding StudioHudVisible}" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="10" Background="#E0090F16" BorderBrush="#344553" BorderThickness="1" CornerRadius="12" Padding="12,9">
+                      <Grid RowDefinitions="Auto,Auto" RowSpacing="8">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                          <StackPanel Spacing="2"><TextBlock Text="PERFORMANCE HUD" Classes="eyebrow" Foreground="{DynamicResource AccentBrush}"/><TextBlock Text="{Binding StudioHudModeLabel}" FontSize="10" Classes="muted" TextTrimming="CharacterEllipsis"/></StackPanel>
+                          <Border Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Center" Background="#18242D" BorderBrush="#344553" BorderThickness="1" CornerRadius="8" Padding="9,5"><TextBlock Text="{Binding StudioHudStateLabel}" FontSize="9" FontWeight="Bold" Foreground="{DynamicResource AccentBrush}"/></Border>
+                          <TextBlock Grid.Column="2" Text="{Binding StudioHudProgressLabel}" FontSize="10" FontWeight="SemiBold" VerticalAlignment="Center" Foreground="{DynamicResource CyanBrush}"/>
+                        </Grid>
+                        <Grid Grid.Row="1" ColumnDefinitions="*,*,*,*,*,*" ColumnSpacing="12">
+                          <StackPanel Spacing="2"><TextBlock Text="TEMPO" Classes="eyebrow"/><TextBlock Text="{Binding StudioHudTempoLabel}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/></StackPanel>
+                          <StackPanel Grid.Column="1" Spacing="2"><TextBlock Text="LIVE NOTES / SEC" Classes="eyebrow"/><TextBlock Text="{Binding StudioHudNotesPerSecondLabel}" FontSize="13" FontWeight="SemiBold" Foreground="{DynamicResource CyanBrush}"/></StackPanel>
+                          <StackPanel Grid.Column="2" Spacing="2"><TextBlock Text="PEAK / SEC" Classes="eyebrow"/><TextBlock Text="{Binding StudioHudPeakRateLabel}" FontSize="13" FontWeight="SemiBold"/></StackPanel>
+                          <StackPanel Grid.Column="3" Spacing="2"><TextBlock Text="ACTIVE VOICES" Classes="eyebrow"/><TextBlock Text="{Binding StudioHudActiveNotesLabel}" FontSize="12" FontWeight="SemiBold" TextTrimming="CharacterEllipsis"/></StackPanel>
+                          <StackPanel Grid.Column="4" Spacing="2"><TextBlock Text="NOTE-ONS" Classes="eyebrow"/><TextBlock Text="{Binding StudioHudNoteOnsLabel}" FontSize="13" FontWeight="SemiBold"/></StackPanel>
+                          <StackPanel Grid.Column="5" Spacing="2"><TextBlock Text="INPUT / TRACKS" Classes="eyebrow"/><TextBlock Text="{Binding StudioHudInputLabel}" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource CyanBrush}"/><TextBlock Text="{Binding StudioHudTracksLabel, StringFormat={}{0} tracks}" FontSize="9" Classes="muted"/></StackPanel>
+                        </Grid>
+                      </Grid>
+                    </Border>
+                    <Border IsVisible="{Binding IsStudioCountingDown}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#D9080D12" BorderBrush="{DynamicResource AccentSoftBrush}" BorderThickness="1" CornerRadius="24" Padding="32,22">
+                      <StackPanel Spacing="4" HorizontalAlignment="Center"><TextBlock Text="GET READY" Classes="eyebrow" HorizontalAlignment="Center" Foreground="{DynamicResource AccentBrush}"/><TextBlock Text="{Binding StudioCountdownLabel}" FontSize="64" FontWeight="Black" HorizontalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}"/><TextBlock Text="Playback starts next" FontSize="10" Classes="muted" HorizontalAlignment="Center"/></StackPanel>
+                    </Border>
+                  </Grid>
+                </Border>
+                <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                  <TextBlock Text="{Binding StudioElapsedLabel}" FontSize="10" Classes="muted" VerticalAlignment="Center" />
+                  <Slider Grid.Column="1" Minimum="0" Maximum="{Binding StudioDurationMs}" Value="{Binding StudioPositionMs, Mode=TwoWay}" IsEnabled="{Binding HasStudioSource}" />
+                  <TextBlock Grid.Column="2" Text="{Binding StudioRemainingLabel}" FontSize="10" Classes="muted" VerticalAlignment="Center" />
+                </Grid>
+                <studio:ReactivePianoKeyboard Grid.Row="3" Result="{Binding StudioResult}" PositionMs="{Binding StudioPositionMs}" IsPlaying="{Binding IsStudioPlaying}" TransposeSemitones="{Binding StudioTranspose}" SelectedTrackIndices="{Binding StudioVisibleTrackIndices}" FilterTracksEnabled="{Binding StudioVisualizerFilterTracksEnabled}" />
+              </Grid>
+            </Border>
+
+            <Border Classes="surfaceCard" Padding="12">
+              <Grid ColumnDefinitions="Auto,Auto,Auto,*,Auto,Auto,Auto,Auto" ColumnSpacing="8">
+                <Button Classes="primaryButton" Command="{Binding StudioPlayPauseCommand}" Content="{Binding StudioPlayPauseLabel}" Width="108" />
+                <Button Grid.Column="1" Classes="secondaryButton" Command="{Binding StudioStopCommand}" Content="STOP" Width="72" />
+                <Button Grid.Column="2" Classes="secondaryButton" Command="{Binding StudioRestartCommand}" Content="RESTART" Width="86" />
+                <TextBlock Grid.Column="3" Text="{Binding StudioPositionLabel}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="12" FontWeight="SemiBold" />
+                <ToggleSwitch Grid.Column="4" Content="LOOP" IsChecked="{Binding StudioLoop}" VerticalAlignment="Center" />
+                <ToggleSwitch Grid.Column="5" Content="METRONOME" IsChecked="{Binding StudioMetronome}" VerticalAlignment="Center" />
+                <Button Grid.Column="6" Classes="secondaryButton" Command="{Binding ToggleStudioHudCommand}" Content="{Binding StudioHudToggleLabel}" Width="82" />
+                <Button Grid.Column="7" Classes="secondaryButton" Command="{Binding StudioPanicCommand}" Content="PANIC" Width="72" />
+              </Grid>
+            </Border>
+
+            <Grid ColumnDefinitions="1.1*,*,*,*,*,*" ColumnSpacing="10">
+              <Border Classes="surfaceCard" Padding="14">
+                <StackPanel Spacing="7">
+                  <Grid ColumnDefinitions="*,Auto"><TextBlock Text="SPEED" Classes="eyebrow"/><TextBlock Grid.Column="1" Text="{Binding StudioSpeedLabel}" FontSize="12" Foreground="{DynamicResource AccentBrush}"/></Grid>
+                  <Slider Minimum="0.25" Maximum="2" Value="{Binding StudioSpeed, Mode=TwoWay}" />
+                  <Grid ColumnDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="5">
+                    <Button Classes="secondaryButton" Content="50%" Command="{Binding SetStudioSpeedCommand}" CommandParameter="0.5" Padding="8,4"/>
+                    <Button Grid.Column="1" Classes="secondaryButton" Content="75%" Command="{Binding SetStudioSpeedCommand}" CommandParameter="0.75" Padding="8,4"/>
+                    <Button Grid.Column="2" Classes="secondaryButton" Content="100%" Command="{Binding SetStudioSpeedCommand}" CommandParameter="1" Padding="8,4"/>
+                    <Button Grid.Column="3" Classes="secondaryButton" Content="125%" Command="{Binding SetStudioSpeedCommand}" CommandParameter="1.25" Padding="8,4"/>
+                  </Grid>
+                </StackPanel>
+              </Border>
+              <Border Grid.Column="1" Classes="surfaceCard" Padding="14">
+                <StackPanel Spacing="7"><Grid ColumnDefinitions="*,Auto"><TextBlock Text="VOLUME" Classes="eyebrow"/><TextBlock Grid.Column="1" Text="{Binding StudioVolume, StringFormat={}{0:P0}}" FontSize="12" Foreground="{DynamicResource CyanBrush}"/></Grid><Slider Minimum="0" Maximum="1" Value="{Binding StudioVolume, Mode=TwoWay}"/><TextBlock Text="Output mix" FontSize="9" Classes="muted"/></StackPanel>
+              </Border>
+              <Border Grid.Column="2" Classes="surfaceCard" Padding="14">
+                <StackPanel Spacing="7"><Grid ColumnDefinitions="*,Auto"><TextBlock Text="TRANSPOSE" Classes="eyebrow"/><TextBlock Grid.Column="1" Text="{Binding StudioTransposeLabel}" FontSize="12" Foreground="{DynamicResource PurpleBrush}"/></Grid><Slider Minimum="-24" Maximum="24" TickFrequency="1" Value="{Binding StudioTranspose, Mode=TwoWay}"/><TextBlock Text="Semitones" FontSize="9" Classes="muted"/></StackPanel>
+              </Border>
+              <Border Grid.Column="3" Classes="surfaceCard" Padding="14">
+                <StackPanel Spacing="7"><Grid ColumnDefinitions="*,Auto"><TextBlock Text="RANGE" Classes="eyebrow"/><TextBlock Grid.Column="1" Text="{Binding StudioRangeMode}" FontSize="11" Foreground="{DynamicResource AccentBrush}"/></Grid><Button Classes="secondaryButton" Command="{Binding OpenStudioRangePickerCommand}" Content="OPEN RANGE ENGINE"/></StackPanel>
+              </Border>
+              <Border Grid.Column="4" Classes="surfaceCard" Padding="14">
+                <StackPanel Spacing="7"><Grid ColumnDefinitions="*,Auto"><TextBlock Text="PERFORMANCE" Classes="eyebrow"/><TextBlock Grid.Column="1" Text="{Binding StudioTrackSelectionLabel}" FontSize="11" Foreground="{DynamicResource CyanBrush}"/></Grid><Button Classes="secondaryButton" Command="{Binding OpenStudioPerformancePickerCommand}" Content="OPEN PERFORMANCE MIXER"/></StackPanel>
+              </Border>
+              <Border Grid.Column="5" Classes="surfaceCard" Padding="14">
+                <StackPanel Spacing="7"><TextBlock Text="INPUT" Classes="eyebrow"/><Button Classes="secondaryButton" Command="{Binding StudioInputArmCommand}" Content="{Binding InputArmLabel}"/><TextBlock Text="{Binding InputSafetyLabel}" FontSize="9" Classes="muted" TextWrapping="Wrap"/></StackPanel>
+              </Border>
+            </Grid>
+
+            <Grid ColumnDefinitions="*,*,*,*,*" ColumnSpacing="10">
+              <Border Classes="surfaceCard" Padding="14"><StackPanel Spacing="3"><TextBlock Text="NOTES" Classes="eyebrow"/><TextBlock Text="{Binding StudioPlayableNotesLabel}" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}"/><TextBlock Text="mapped to keyboard" FontSize="9" Classes="muted"/></StackPanel></Border>
+              <Border Grid.Column="1" Classes="surfaceCard" Padding="14"><StackPanel Spacing="3"><TextBlock Text="MAPPING" Classes="eyebrow"/><TextBlock Text="{Binding StudioMappingModeLabel}" FontSize="15" FontWeight="SemiBold"/><TextBlock Text="active range strategy" FontSize="9" Classes="muted"/></StackPanel></Border>
+              <Border Grid.Column="2" Classes="surfaceCard" Padding="14"><StackPanel Spacing="3"><TextBlock Text="SKIPPED" Classes="eyebrow"/><TextBlock Text="{Binding StudioSkippedNotesLabel}" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="outside current range" FontSize="9" Classes="muted"/></StackPanel></Border>
+              <Border Grid.Column="3" Classes="surfaceCard" Padding="14"><StackPanel Spacing="3"><TextBlock Text="KEYS" Classes="eyebrow"/><TextBlock Text="{Binding StudioMappedKeysLabel}" FontSize="18" FontWeight="SemiBold" Foreground="{DynamicResource CyanBrush}"/><TextBlock Text="unique bindings" FontSize="9" Classes="muted"/></StackPanel></Border>
+              <Border Grid.Column="4" Classes="surfaceCard" Padding="14"><StackPanel Spacing="3"><TextBlock Text="CONFLICTS" Classes="eyebrow"/><TextBlock Text="{Binding StudioConflictLabel}" FontSize="18" FontWeight="SemiBold"/><TextBlock Text="physical key collisions" FontSize="9" Classes="muted"/></StackPanel></Border>
+            </Grid>
+          </StackPanel>
+
+          <StackPanel IsVisible="{Binding IsSettings}" Spacing="16">
+            <Border Classes="surfaceCard" Padding="24">
+              <StackPanel Spacing="14">
+                <TextBlock Text="STUDIO CUSTOMISATION" Classes="eyebrow" Foreground="{DynamicResource AccentBrush}" />
+                <TextBlock Text="Make VPB feel like yours" FontSize="24" FontWeight="SemiBold" />
+                <TextBlock Text="Choose a colour palette and accent. Your preferences are saved between updates." FontSize="11" Classes="muted" TextWrapping="Wrap" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="14">
+                  <StackPanel Spacing="6">
+                    <TextBlock Text="THEME" Classes="eyebrow" />
+                    <ComboBox MinHeight="38" ItemsSource="{Binding ThemeOptions}" SelectedItem="{Binding ThemeOption, Mode=TwoWay}" />
+                  </StackPanel>
+                  <StackPanel Grid.Column="1" Spacing="6">
+                    <TextBlock Text="ACCENT COLOUR" Classes="eyebrow" />
+                    <ComboBox MinHeight="38" ItemsSource="{Binding AccentColorOptions}" SelectedItem="{Binding AccentColorOption, Mode=TwoWay}" />
+                  </StackPanel>
+                </Grid>
+                <Border Background="{DynamicResource AccentDimBrush}" BorderBrush="{DynamicResource AccentSoftBrush}" BorderThickness="1" CornerRadius="12" Padding="13">
+                  <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10">
+                    <Border Width="24" Height="24" CornerRadius="8" Background="{DynamicResource AccentBrush}" VerticalAlignment="Center" />
+                    <StackPanel Grid.Column="1" Spacing="2" VerticalAlignment="Center">
+                      <TextBlock Text="LIVE PREVIEW" FontSize="10" FontWeight="Bold" Foreground="{DynamicResource PrimaryTextBrush}" />
+                      <TextBlock Text="{Binding ThemeOption}" FontSize="10" Foreground="{DynamicResource SecondaryTextBrush}" />
+                    </StackPanel>
+                    <TextBlock Grid.Column="2" Text="{Binding AccentColorHex}" FontSize="10" FontWeight="SemiBold" Foreground="{DynamicResource AccentBrush}" VerticalAlignment="Center" />
+                  </Grid>
+                </Border>
+                <ToggleSwitch Content="REDUCE MOTION" IsChecked="{Binding ReduceMotion, Mode=TwoWay}" />
+                <TextBlock Text="Stops animated ambient particles, hero pulses and page sweeps. This does not affect MIDI timing or playback." FontSize="10" Classes="muted" TextWrapping="Wrap" />
+                <StackPanel Orientation="Horizontal" Spacing="9">
+                  <Button Classes="secondaryButton" Command="{Binding ResetAppearanceCommand}">RESTORE DEFAULTS</Button>
+                  <Button Classes="primaryButton" Command="{Binding SaveSettingsCommand}">SAVE SETTINGS</Button>
+                </StackPanel>
+              </StackPanel>
+            </Border>
+            <Border Classes="surfaceCard" Padding="24">
+              <StackPanel Spacing="12">
+                <TextBlock Text="USER DATA" Classes="eyebrow" Foreground="{DynamicResource AccentBrush}" />
+                <TextBlock Text="Permanent storage" FontSize="24" FontWeight="SemiBold" />
+                <TextBlock Text="Your library is independent of the VPB installation folder. Appearance settings are stored in the same version-independent data area." FontSize="11" Classes="muted" TextWrapping="Wrap" />
+                <Border Background="{DynamicResource CardBrush}" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1" CornerRadius="11" Padding="14">
+                  <StackPanel Spacing="5"><TextBlock Text="MIDI LIBRARY" Classes="eyebrow" /><TextBlock Text="{Binding LibraryFolder}" FontSize="11" TextWrapping="Wrap" /></StackPanel>
+                </Border>
+                <StackPanel Orientation="Horizontal" Spacing="9">
+                  <Button Classes="primaryButton" Command="{Binding OpenMidiFolderCommand}">OPEN MIDI FOLDER</Button>
+                  <Button Classes="secondaryButton" Command="{Binding OpenDataFolderCommand}">OPEN DATA FOLDER</Button>
+                </StackPanel>
+              </StackPanel>
+            </Border>
+            <Border Classes="surfaceCard" Padding="24">
+              <StackPanel Spacing="10"><TextBlock Text="LOGGING &amp; DIAGNOSTICS" Classes="eyebrow" /><TextBlock Text="Detailed logs stay outside the installation folder." FontSize="11" Classes="muted" /><TextBlock Text="{Binding LogsFolder}" FontSize="11" TextWrapping="Wrap" /><Button Classes="secondaryButton" HorizontalAlignment="Left" Command="{Binding OpenLogsFolderCommand}">OPEN LOG FOLDER</Button></StackPanel>
+            </Border>
+          </StackPanel>
+        </Grid>
+      </ScrollViewer>
+      <Grid Grid.Row="1" Panel.ZIndex="50" IsVisible="{Binding StudioRangePickerOpen}" Background="#B5090D12">
+        <Border Width="560" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#111820" BorderBrush="#344454" BorderThickness="1" CornerRadius="20" Padding="24">
+          <StackPanel Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+              <StackPanel Spacing="3"><TextBlock Text="RANGE ENGINE" Classes="eyebrow" Foreground="{DynamicResource AccentBrush}"/><TextBlock Text="How VPB fits notes to the keyboard" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="Choose the pitch strategy before playback." FontSize="11" Classes="muted"/></StackPanel>
+              <Button Grid.Column="1" Classes="secondaryButton" Command="{Binding CloseStudioRangePickerCommand}" Content="CLOSE"/>
+            </Grid>
+            <StackPanel Spacing="8">
+              <Button Classes="secondaryButton" Command="{Binding SetStudioRangeModeCommand}" CommandParameter="Smart Fit" HorizontalContentAlignment="Left" Padding="16,13">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14"><Border Width="38" Height="38" CornerRadius="11" Background="{DynamicResource AccentDimBrush}"><TextBlock Text="↕" FontSize="18" Foreground="{DynamicResource AccentBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Spacing="2"><TextBlock Text="SMART FIT" FontWeight="SemiBold"/><TextBlock Text="Keep playable notes exact and fold only outliers by octave." FontSize="10" Classes="muted" TextWrapping="Wrap"/></StackPanel></Grid>
+              </Button>
+              <Button Classes="secondaryButton" Command="{Binding SetStudioRangeModeCommand}" CommandParameter="Exact Pitch" HorizontalContentAlignment="Left" Padding="16,13">
+                <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="14"><Border Width="38" Height="38" CornerRadius="11" Background="#18212B"><TextBlock Text="♯" FontSize="18" Foreground="{DynamicResource CyanBrush}" HorizontalAlignment="Center" VerticalAlignment="Center"/></Border><StackPanel Grid.Column="1" Spacing="2"><TextBlock Text="EXACT PITCH" FontWeight="SemiBold"/><TextBlock Text="Never move a note. Anything outside the keyboard is skipped." FontSize="10" Classes="muted" TextWrapping="Wrap"/></StackPanel></Grid>
+              </Button>
+            </StackPanel>
+          </StackPanel>
+        </Border>
+      </Grid>
+
+      <Grid Grid.Row="1" Panel.ZIndex="51" IsVisible="{Binding StudioPerformancePickerOpen}" Background="#B5090D12">
+        <Border Width="760" MaxHeight="760" HorizontalAlignment="Center" VerticalAlignment="Center" Background="#111820" BorderBrush="#344454" BorderThickness="1" CornerRadius="20" Padding="24">
+          <Grid RowDefinitions="Auto,Auto,*,Auto" RowSpacing="15">
+            <Grid ColumnDefinitions="*,Auto">
+              <StackPanel Spacing="3"><TextBlock Text="PERFORMANCE MIXER" Classes="eyebrow" Foreground="{DynamicResource CyanBrush}"/><TextBlock Text="Choose the instruments that fall onto the keyboard" FontSize="22" FontWeight="SemiBold"/><TextBlock Text="Pick a preset or build your own instrument mix." FontSize="11" Classes="muted"/></StackPanel>
+              <Button Grid.Column="1" Classes="secondaryButton" Command="{Binding CloseStudioPerformancePickerCommand}" Content="CLOSE"/>
+            </Grid>
+            <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="8">
+              <Button Classes="secondaryButton" Command="{Binding SetStudioPerformancePresetCommand}" CommandParameter="All Instruments" Content="ALL INSTRUMENTS"/>
+              <Button Grid.Column="1" Classes="secondaryButton" Command="{Binding SetStudioPerformancePresetCommand}" CommandParameter="Best Piano" Content="BEST PIANO"/>
+              <Button Grid.Column="2" Classes="secondaryButton" Command="{Binding SetStudioPerformancePresetCommand}" CommandParameter="Best Melody" Content="BEST MELODY"/>
+              <Button Grid.Column="3" Classes="secondaryButton" Command="{Binding SetStudioPerformancePresetCommand}" CommandParameter="Custom Selection" Content="CUSTOM"/>
+            </Grid>
+            <ScrollViewer Grid.Row="2" MaxHeight="420" VerticalScrollBarVisibility="Auto">
+              <ItemsControl ItemsSource="{Binding StudioTrackOptions}">
+                <ItemsControl.ItemTemplate>
+                  <DataTemplate>
+                    <Border Background="#0D141C" BorderBrush="#263544" BorderThickness="1" CornerRadius="11" Padding="12" Margin="0,0,0,7">
+                      <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay}" VerticalAlignment="Center"/>
+                        <StackPanel Grid.Column="1" Spacing="2"><TextBlock Text="{Binding Label}" FontWeight="SemiBold"/><TextBlock Text="{Binding Detail}" FontSize="9" Classes="muted"/></StackPanel>
+                        <TextBlock Grid.Column="2" Text="{Binding ProgramLabel}" FontSize="9" Classes="muted" VerticalAlignment="Center"/>
+                      </Grid>
+                    </Border>
+                  </DataTemplate>
+                </ItemsControl.ItemTemplate>
+              </ItemsControl>
+            </ScrollViewer>
+            <Grid Grid.Row="3" ColumnDefinitions="Auto,Auto,*,Auto" ColumnSpacing="8">
+              <Button Classes="secondaryButton" Command="{Binding SelectAllStudioTracksCommand}" Content="SELECT ALL"/>
+              <Button Grid.Column="1" Classes="secondaryButton" Command="{Binding ClearStudioTracksCommand}" Content="CLEAR ALL"/>
+              <TextBlock Grid.Column="2" Text="{Binding StudioTrackSelectionLabel}" Classes="muted" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+              <Button Grid.Column="3" Classes="primaryButton" Command="{Binding CloseStudioPerformancePickerCommand}" Content="DONE" Width="88"/>
+            </Grid>
+          </Grid>
+        </Border>
+      </Grid>
+
+      <Border Grid.Row="2" Background="#070A0E" BorderBrush="{DynamicResource BorderBrush}" BorderThickness="0,1,0,0" Padding="30,9"><Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12"><Ellipse Width="6" Height="6" Fill="{DynamicResource AccentBrush}" VerticalAlignment="Center" /><TextBlock Grid.Column="1" Text="{Binding StatusMessage}" FontSize="10" Classes="muted" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" /><TextBlock Grid.Column="2" Text="{Binding LastRefreshLabel}" FontSize="9" Classes="muted" VerticalAlignment="Center" /></Grid></Border>
+    </Grid>
+  </Grid>
+</Window>
