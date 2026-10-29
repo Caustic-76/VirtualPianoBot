@@ -26,7 +26,7 @@ RestartApplications=no
 
 [Files]
 Source: "..\release\app\VPB6.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\release\app\runtime\VPB6Studio.exe"; DestDir: "{app}\runtime"; Flags: ignoreversion hidden
+Source: "..\release\app\runtime\VPB6Studio.exe"; DestDir: "{app}\runtime"; Flags: ignoreversion; Attribs: hidden
 Source: "..\release\app\README.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\release\app\updates.json"; DestDir: "{app}"; Flags: ignoreversion
 
