@@ -10,7 +10,7 @@
 
 ## GitHub Releases
 
-The included `.github/workflows/release.yml` workflow builds and tests the solution on Windows when a release tag such as `v6.0.1` is pushed. It creates the Inno Setup installer and publishes these assets in the matching GitHub Release:
+The included `.github/workflows/release.yml` workflow builds and tests the solution on Windows when a release tag such as `v6.0.2` is pushed. It creates the Inno Setup installer and publishes these assets in the matching GitHub Release:
 
 - `VirtualPianoBot-<version>-Setup.exe`
 - `VirtualPianoBot-<version>-win-x64.zip`
@@ -25,10 +25,10 @@ For this simple update route, the repository containing release assets must be p
 
 1. Build `BUILD_RELEASE.bat` on Windows and test all regressions, including the repeated-chord case.
 2. Ensure GitHub repository content is uploaded and the workflow is present at `.github/workflows/release.yml`.
-3. Push a tag that matches `VERSION.txt`, prefixed with `v`. The included hotfix package uses `VERSION.txt = 6.0.1`, so the tag is `v6.0.1`.
+3. Push a tag that matches `VERSION.txt`, prefixed with `v`. The included hotfix package uses `VERSION.txt = 6.0.2`, so the tag is `v6.0.2`.
 4. GitHub Actions installs .NET 10, validates the tag, builds and tests the source, creates the installer, then publishes the update ZIPs and manifest.
 5. Confirm all four assets exist on the published release and that the `update-manifest.json` package size and SHA-256 match `VirtualPianoBot-Update.zip`.
-6. Install 6.0.1 manually once if using an older 6.0.0 build without the Phase 9 updater. Configure/check the update source if needed. Later updates should use the in-app updater.
+6. Install 6.0.2 manually once if using an older 6.0.0 build without the Phase 9 updater. Configure/check the update source if needed. Later updates should use the in-app updater.
 
 ## Data-safety contract
 

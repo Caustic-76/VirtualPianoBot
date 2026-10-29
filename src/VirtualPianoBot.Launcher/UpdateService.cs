@@ -10,7 +10,7 @@ namespace VirtualPianoBot.Launcher;
 internal sealed class LocalUpdateConfiguration
 {
     public string Channel { get; set; } = "stable";
-    public string Version { get; set; } = "6.0.1";
+    public string Version { get; set; } = "6.0.2";
     public string ManifestUrl { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
 }

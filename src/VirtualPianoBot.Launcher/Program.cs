@@ -36,7 +36,7 @@ internal sealed class LauncherForm : Form
         StartPosition = FormStartPosition.CenterScreen;
 
         var title = new Label { Text = "VIRTUAL PIANO BOT 6", Font = new Font("Segoe UI Semibold", 28), ForeColor = Color.FromArgb(184,255,101), AutoSize = true, Location = new Point(42, 38) };
-        var sub = new Label { Text = "6.0.1  •  PERFORMANCE STUDIO", ForeColor = Color.FromArgb(176,187,199), AutoSize = true, Location = new Point(46, 88) };
+        var sub = new Label { Text = "6.0.2  •  PERFORMANCE STUDIO  •  UPDATE TEST", ForeColor = Color.FromArgb(176,187,199), AutoSize = true, Location = new Point(46, 88) };
         var line = new Panel { BackColor = Color.FromArgb(38,51,66), Location = new Point(44, 120), Size = new Size(732, 1) };
 
         launch.Text = "LAUNCH VPB 6";

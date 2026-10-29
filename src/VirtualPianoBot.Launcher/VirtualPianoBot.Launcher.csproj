@@ -7,8 +7,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>VPB6</AssemblyName>
     <RootNamespace>VirtualPianoBot.Launcher</RootNamespace>
-    <Version>6.0.1</Version>
-    <InformationalVersion>6.0.1</InformationalVersion>
+    <Version>6.0.2</Version>
+    <InformationalVersion>6.0.2</InformationalVersion>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 </Project>

@@ -1,34 +1,32 @@
-# VPB 6.0.1 · Release & Verification Notes
+# VPB 6.0.2 · Update-Path Test Release
 
-This is a source/build package combining the Phase 9 updater and the repeated-note retrigger hotfix. It is **not precompiled binaries**. The .NET 10 Windows build must pass before publishing a release.
+This test release validates the in-app update path from installed version 6.0.1 to 6.0.2.
 
-## Build and local checks
+## Visible test marker
 
-Run `BUILD_RELEASE.bat` on Windows with the .NET 10 SDK installed. It runs the preflight, builds the complete solution and executes the MIDI-library safety, MIDI-analysis and keyboard-mapping regression suites. The foundation suite now includes the repeated-chord retrigger test. Install Inno Setup 6 if you also want the setup executable.
+The launcher subtitle includes **UPDATE TEST** after the 6.0.2 version and Performance Studio label. This makes the updated payload easy to identify after installation.
 
-The output includes:
+## Expected release assets
 
-- `release\app\VPB6.exe`
-- `release\app\runtime\VPB6Studio.exe`
-- `release\VirtualPianoBot-6.0.1-win-x64.zip`
-- `release\update-manifest.json`
-- `release\VirtualPianoBot-Update.zip` when GitHub mode is configured
-- `release\VirtualPianoBot-6.0.1-Setup.exe` when Inno Setup 6 is installed
+- `VirtualPianoBot-6.0.2-Setup.exe` for manual installation
+- `VirtualPianoBot-6.0.2-win-x64.zip` as the versioned Windows application package
+- `VirtualPianoBot-Update.zip` as the stable-name app-only update payload
+- `update-manifest.json` with package version, HTTPS URL, byte size, SHA-256 and release notes
 
-## GitHub release workflow
+## Test procedure
 
-The `.github/workflows/release.yml` workflow is triggered by a pushed tag that exactly matches the `VERSION.txt` value with a `v` prefix. It builds/tests with .NET 10, creates the installer and attaches the release assets using the built-in `GITHUB_TOKEN`/`gh` client. No personal access token is embedded in VPB.
+1. Keep the existing 6.0.1 installation.
+2. Open the launcher and click **CHECK FOR UPDATES**.
+3. Confirm the offered version is 6.0.2.
+4. Approve the update and allow download verification and installation to finish.
+5. Confirm the launcher reopens and its subtitle contains **UPDATE TEST**.
+6. Verify the MIDI library, favourites and Studio settings remain present.
+7. Confirm the update log records success. If a step fails, retain the log and rollback backup for diagnosis.
 
-The repository needs to be public for this simple anonymous updater design. The manifest URL and stable update-package URL are stamped from `github.repository`. After the first successful release, install the 6.0.1 setup executable once and use **CHECK FOR UPDATES** for subsequent stable releases.
+## Safety and verification
 
-## What is tested by source checks
+The updater requires HTTPS, checks SHA-256 and package size, validates the archive against its app-only allow-list, and preserves application files for rollback. The permanent MIDI library remains at `%APPDATA%\VirtualPianoBot\midi`.
 
-- Stable product version metadata matches `VERSION.txt`.
-- The repeated-chord regression checks confirm all note-ons and note-offs across shared timing boundaries and verify release-before-press ordering.
-- Library import and migration remain copy-only/no-overwrite.
-- The updater requires HTTPS, validates SHA-256 and package size, enforces an archive allow-list, and performs application-file rollback on failure.
-- The release workflow publishes matching versioned setup, ZIP and manifest assets.
+GitHub Actions builds the full solution, runs source preflight and regression suites, compiles the Inno Setup installer, and only then publishes the release assets. CI success validates build and packaging; the actual in-app update and rollback still need confirmation on Windows.
 
-## Verification limitation
-
-The generation environment does not include the .NET 10 SDK or Windows PowerShell. This ZIP has passed archive and static-structure checks, but the C# build, GitHub Actions workflow, UAC flow, live download, update install and rollback must be verified on Windows before enabling public updates.
+Phase 6 Smart Automation remains intentionally skipped.

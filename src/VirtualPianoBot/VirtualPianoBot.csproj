@@ -6,10 +6,10 @@
     <AssemblyName>VPB6Studio</AssemblyName>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
-    <Version>6.0.1</Version>
-    <AssemblyVersion>6.0.1.0</AssemblyVersion>
-    <FileVersion>6.0.1.0</FileVersion>
-    <InformationalVersion>6.0.1</InformationalVersion>
+    <Version>6.0.2</Version>
+    <AssemblyVersion>6.0.2.0</AssemblyVersion>
+    <FileVersion>6.0.2.0</FileVersion>
+    <InformationalVersion>6.0.2</InformationalVersion>
     <Description>Virtual Piano Bot 6 native Windows performance studio</Description>
   </PropertyGroup>
 

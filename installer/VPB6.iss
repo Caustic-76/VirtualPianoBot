@@ -1,6 +1,6 @@
 ; VPB 6 production installer
 #define MyAppName "Virtual Piano Bot 6"
-#define MyAppVersion "6.0.1"
+#define MyAppVersion "6.0.2"
 #define MyAppPublisher "Virtual Piano Bot"
 #define MyAppExeName "VPB6.exe"
 #define StudioExeName "VPB6Studio.exe"
@@ -13,7 +13,7 @@ AppPublisher={#MyAppPublisher}
 DefaultDirName={autopf}\Virtual Piano Bot 6
 DefaultGroupName={#MyAppName}
 OutputDir=..\release
-OutputBaseFilename=VirtualPianoBot-6.0.1-Setup
+OutputBaseFilename=VirtualPianoBot-6.0.2-Setup
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 PrivilegesRequired=lowest

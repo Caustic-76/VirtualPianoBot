@@ -13,19 +13,19 @@ This repository is prepared for **public GitHub Releases**. A public release is 
 
 ## 2. Publish the first automated release
 
-The source package uses `VERSION.txt = 6.0.1`. Create and push the matching tag from a terminal opened in the cloned repository:
+The source package uses `VERSION.txt = 6.0.2`. Create and push the matching tag from a terminal opened in the cloned repository:
 
 ```powershell
-git tag v6.0.1
-git push origin v6.0.1
+git tag v6.0.2
+git push origin v6.0.2
 ```
 
 That tag triggers `.github/workflows/release.yml`. GitHub Actions installs .NET 10, validates the tag/version match, runs the full solution build and regression checks, creates the Inno Setup installer, and publishes the release assets only if the preceding steps succeed.
 
 The release should contain:
 
-- `VirtualPianoBot-6.0.1-Setup.exe`
-- `VirtualPianoBot-6.0.1-win-x64.zip`
+- `VirtualPianoBot-6.0.2-Setup.exe`
+- `VirtualPianoBot-6.0.2-win-x64.zip`
 - `VirtualPianoBot-Update.zip`
 - `update-manifest.json`
 
@@ -33,7 +33,7 @@ If the GitHub Actions run fails, no release is published by that workflow. Read 
 
 ## 3. Install the updater-enabled build
 
-The older 6.0.0 stable build predates the Phase 9 updater. Install the 6.0.1 setup package once. Its `updates.json` is configured by the release workflow with the repository's public latest-release manifest URL. Later releases can be checked from the launcher with **CHECK FOR UPDATES**.
+The older 6.0.0 stable build predates the Phase 9 updater. Install the 6.0.2 setup package once. Its `updates.json` is configured by the release workflow with the repository's public latest-release manifest URL. Later releases can be checked from the launcher with **CHECK FOR UPDATES**.
 
 The configured URL pattern is:
 
